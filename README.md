@@ -16,3 +16,7 @@
 - QR-code
 <p align="middle">
 <img src="./resources/image4.png" height="400"></a>
+
+- Job Finder
+<p align="middle">
+<img src="./resources/image5.png" height="400"></a>

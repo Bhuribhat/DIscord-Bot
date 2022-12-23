@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from replit import db
 from datetime import datetime
 from keep_alive import keep_alive
+from web_scrapping import find_jobs
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
@@ -286,11 +287,12 @@ class MyClient(discord.Client):
                             value="`guess, send, responding, list, add, del`",
                             inline=True)
             embed.add_field(name="Study:",
-                            value="`code, cal, random, plot, master1, master1, base, qrcode`",
+                            value="`code, cal, random, plot, master1, master1, base, qrcode, job`",
                             inline=True)
             embed.add_field(
                 name="Usage:",
-                value="`code language`, `responding true / false`, \n`add word`, `del index`, `random list`, \n`send channel text`, `plot number`, `qrcode data or link`, `master1 a b d`, \n`base num base want_base`, `master2 a b k`",
+                value=
+                "`code language`, `responding true / false`, \n`add word`, `del index`, `random list`, \n`send channel text`, `plot number`, `qrcode data or link`, `master1 a b d`, \n`base num base want_base`, `master2 a b k`, \n`job keyword unwant_skill`",
                 inline=False)
             embed.set_footer(text="-" * 30 + "\nIndividual study mini project")
             await message.channel.send(embed=embed)
@@ -569,6 +571,30 @@ class MyClient(discord.Client):
             embedVar = discord.Embed(title="From base " + str(base), description=value, color=0xa84300)
             embedVar.add_field(name="Convert to base " + str(convert_base), value=f"||`{result.strip()}`||", inline=False)
             await message.channel.send(embed=embedVar)
+
+        # jobs seeker with csv file
+        if msg.startswith("$job"):
+            attr = msg.split("$job", 1)[1].split()
+            if (len(attr) == 0):
+                await message.channel.send("__**usage**__: `$job keyword unwanted_skill`")
+                return
+            else:
+                if (len(attr) > 2):
+                    await message.channel.send("*Invalid Input..*")
+                    return
+
+                keyword, unwant_skill = attr
+                df = find_jobs(keyword, unwant_skill)
+                df = df.drop(['Job Description', 'More Information', 'Skills Required'], axis=1)
+                
+                length = df.shape[0]
+                df = df.head(5).to_string()
+
+            embedVar = discord.Embed(title=f"All Jobs with {keyword} skill", description=f"filter out {unwant_skill}", color=0xa84300)
+            embedVar.add_field(name=f"Found {length} jobs", value=f"```{df}```", inline=False)
+            await message.channel.send(embed=embedVar)
+            await message.channel.send("for more detail please check `csv file`")
+            await message.channel.send(file=discord.File(".\\assets\\jobs.csv"))
 
 
 # driver
