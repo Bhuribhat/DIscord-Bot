@@ -1,22 +1,27 @@
 # Discord-Bot
 
-
-- help command
-<p align="middle">
-<img src="./resources/image1.png" height="400"></a>
+useful command
 
 - send schedule every 7 a.m.
-<p align="middle">
-<img src="./resources/image2.png" height="400"></a>
+<p align="left">
+<img src="./resources/image2.png" weidth="400"></a>
 
-- plot graph
-<p align="middle">
-<img src="./resources/image3.png" height="400"></a>
+- help command  
+**usage**: $help
+<p align="left">
+<img src="./resources/image1.png" weidth="400"></a>
 
-- QR-code
-<p align="middle">
-<img src="./resources/image4.png" height="400"></a>
+- plot graph  
+**usage**: $plot <number>
+<p align="left">
+<img src="./resources/image3.png" weidth="400"></a>
 
-- Job Finder
-<p align="middle">
-<img src="./resources/image5.png" height="400"></a>
+- QR-code  
+**usage**: $qrcode <[list of things] or [link]>
+<p align="left">
+<img src="./resources/image4.png" weidth="400"></a>
+
+- Job Finder  
+**usage**: $job <keyword_skill> <unwanted_skill>
+<p align="left">
+<img src="./resources/image5.png" weidth="400"></a>
