@@ -610,7 +610,7 @@ class MyClient(discord.Client):
             title = choices[0]
             display_choices = ''
             for i in range(len(choices[1:])):
-                display_choices += f"{i + 1}. {choices[1:][i]}\n"
+                display_choices += f"{emoji[i]} {choices[1:][i]}\n"
             embedVar = discord.Embed(title=f"Please vote!", color=0x64395d)
             embedVar.add_field(name=title, value=f"```{display_choices}```", inline=False)
             pollmsg = await message.channel.send(embed=embedVar)
