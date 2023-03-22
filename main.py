@@ -284,15 +284,15 @@ class MyClient(discord.Client):
             # embed.set_author(name="กายเองจ้า")
             embed.set_thumbnail(url="https://i.imgur.com/axLm3p6.jpeg")
             embed.add_field(name="General:",
-                            value="`guess, send, responding, list, add, del`",
+                            value="`guess, send, responding, list, add, del, qrcode, poll`",
                             inline=True)
             embed.add_field(name="Study:",
-                            value="`code, cal, random, plot, master1, master1, base, qrcode, job`",
+                            value="`code, cal, random, plot, master1, master1, base, job`",
                             inline=True)
             embed.add_field(
                 name="Usage:",
                 value=
-                "`code language`, `responding true / false`, \n`add word`, `del index`, `random list`, \n`send channel text`, `plot number`, `qrcode data or link`, `master1 a b d`, \n`base num base want_base`, `master2 a b k`, \n`job keyword unwant_skill`",
+                "`code language`, `responding true / false`, \n`add word`, `del index`, `random list`, \n`send channel text`, `plot number`, `qrcode data or link`, `master1 a b d`, \n`base num base want_base`, `master2 a b k`, \n`job keyword unwant_skill`, `poll title <list of choices>`",
                 inline=False)
             embed.set_footer(text="-" * 30 + "\nIndividual study mini project")
             await message.channel.send(embed=embed)
@@ -596,6 +596,27 @@ class MyClient(discord.Client):
             await message.channel.send("for more detail please check `csv file`")
             await message.channel.send(file=discord.File(".\\assets\\jobs.csv"))
 
+        # poll with reactions
+        if msg.startswith("$poll"):
+            emoji = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣']
+            choices = msg.split("$poll")[1].split()
+            if (len(choices) == 0):
+                await message.channel.send("__**usage**__: `$poll title <list of choice>`")
+                return
+            if (len(choices) > len(emoji) + 1):
+                await message.channel.send("I give up.")
+                return
+
+            title = choices[0]
+            display_choices = ''
+            for i in range(len(choices[1:])):
+                display_choices += f"{i + 1}. {choices[1:][i]}\n"
+            embedVar = discord.Embed(title=f"Please vote!", color=0x64395d)
+            embedVar.add_field(name=title, value=f"```{display_choices}```", inline=False)
+            pollmsg = await message.channel.send(embed=embedVar)
+
+            for i in range(len(choices[1:])):
+                await pollmsg.add_reaction(emoji[i])
 
 # driver
 client = MyClient()
