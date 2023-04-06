@@ -5,6 +5,7 @@ import requests
 
 def find_jobs(keyword, unwanted_skill):
     location = "Thailand"
+    if keyword == 'None' or keyword == None or keyword == '-': keyword = ''
     DOMAIN = "https://www.timesjobs.com/candidate/job-search.html?searchType=personalizedSearch"
     FILTER = f"&from=submit&txtKeywords={keyword}&txtLocation={location}"
 
