@@ -1,8 +1,9 @@
-import discord
+import os
+import math
+import qrcode
 import random
 import asyncio
-import qrcode
-import math
+import discord
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -14,7 +15,7 @@ from mcv_notify import get_notifications
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-TOKEN = "<YOUR_TOKEN>"
+TOKEN = os.environ['TOKEN']
 
 # variable
 words = ['ว่าไง', 'มา', 'เหงา', 'หิว', 'ง่วง', 'โหล', 'เอาเลย', 'ดี']
@@ -124,7 +125,7 @@ async def inform():
             inline=False)
         # embedVar.set_author(name="", icon_url="")
         study_room_channel = client.get_channel(808174559529926666)
-        Aqioz_id = '<@479095309792968704>'
+        Aqioz_id = os.environ['AQIOZ_ID']
         await study_room_channel.send(f"มาเรียนว้อย {Aqioz_id}")
         await study_room_channel.send(embed=embedVar)
 

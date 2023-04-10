@@ -1,10 +1,11 @@
 import re
+import os
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timezone, timedelta
 
-MCV_USERNAME = "<YOUR_USERNAME>"
-MCV_PASSWORD = "<YOUR_PASSWORD>"
+MCV_USERNAME = os.environ['MCV_USERNAME']
+MCV_PASSWORD = os.environ['MCV_PASSWORD']
 
 URL = "https://www.mycourseville.com/"
 
