@@ -30,3 +30,8 @@ useful command
 **usage**: $poll [title] [choice1 choice2 ...]
 <p align="left">
 <img src="./resources/image6.png" width="500"></a>
+
+- Notification
+**usage**: $noti
+<p align="left">
+<img src="./resources/image7.png" width="500"></a>

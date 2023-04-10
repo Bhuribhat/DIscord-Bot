@@ -10,6 +10,7 @@ from replit import db
 from datetime import datetime
 from keep_alive import keep_alive
 from web_scrapping import find_jobs
+from mcv_notify import get_notifications
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
@@ -20,16 +21,14 @@ words = ['ว่าไง', 'มา', 'เหงา', 'หิว', 'ง่วง
 interact = ['โอ้ววว', 'ไงเงา', 'ฝันดีน้า', 'เยลโล่ว', 'อู้วววววว']
 
 schedule = {
-    "monday": "09.30 - 11.00 AM : [Comp Sys Arch](https://www.mycourseville.com/?q=courseville/course/29680)\n"
-    "13.00 - 16.00 PM : [CEM II](https://www.mycourseville.com/?q=courseville/course/29670)",
-    "tuesday": "08.00 - 09.30 AM : [DB System](https://www.mycourseville.com/?q=courseville/course/29677)\n"
-    "09.30 - 11.00 AM : [Software Eng I](https://www.mycourseville.com/?q=courseville/course/29678)\n"
-    "13.00 - 16.00 PM : [HW Sync LAB I](https://www.mycourseville.com/?q=courseville/course/29681)",
-    "wednesday": "09.30 - 11.00 AM : [Comp Sys Arch](https://www.mycourseville.com/?q=courseville/course/29680)\n"
-    "13.00 - 16.00 PM : [Intro Dig Imaging](https://www.mycourseville.com/?q=courseville/course/29690)",
-    "thursday": "08.00 - 09.30 AM : [DB System](https://www.mycourseville.com/?q=courseville/course/29677)\n"
-                "09.30 - 11.00 AM : [Software Eng I](https://www.mycourseville.com/?q=courseville/course/29678)",
-    "friday": "09.00 - 11.00 AM : [CEM LAB](https://www.mycourseville.com/?q=courseville/course/29670)"
+    "monday":  "13.00 - 16.00 PM : [Computer Vision](https://www.mycourseville.com/?q=courseville/course/32214)\n"\
+                "13.00 - 16.00 PM : [Neural Network](https://sites.google.com/view/ssukree/courses/2110571-neural-network-22022?authuser=0)",
+    "tuesday":  "08.00 - 09.30 AM : [Software Eng II](https://www.mycourseville.com/?q=courseville/course/32207)\n"\
+                "09.30 - 12.30 AM : [OS Sys Prog](https://www.mycourseville.com/?q=courseville/course/32203)\n"\
+                "13.00 - 16.00 PM : [Data Sci/Eng](https://www.mycourseville.com/?q=courseville/course/32215)",
+    "wednesday":"09.00 - 12.00 AM : [Comp Network I](https://www.mycourseville.com/?q=courseville/course/32216)",
+    "thursday": "08.00 - 09.30 AM : [Software Eng II](https://www.mycourseville.com/?q=courseville/course/32207)",
+    "friday":   "09.00 - 12.00 AM : [Tech Writing Eng](https://sites.google.com/view/5500308-s12-s2-22/home)"
 }
 
 # initial data to replit's database
@@ -287,7 +286,7 @@ class MyClient(discord.Client):
                             value="`guess, send, responding, list, add, del, qrcode, poll`",
                             inline=True)
             embed.add_field(name="Study:",
-                            value="`code, cal, random, plot, master1, master1, base, job`",
+                            value="`code, cal, random, plot, master1, master1, base, job, noti`",
                             inline=True)
             embed.add_field(
                 name="Usage:",
@@ -617,6 +616,16 @@ class MyClient(discord.Client):
 
             for i in range(len(choices[1:])):
                 await pollmsg.add_reaction(emoji[i])
+
+        # get mcv notifications within 1 week
+        if msg.startswith("$noti"):
+            notifications = get_notifications()
+            embedVar = discord.Embed(title="MCV Notification", color=0x00ff00)
+            for notification in notifications:
+                value = f"```{notification[1]}```\n{notification[2]}"
+                embedVar.add_field(name=notification[0], value=value, inline=False)
+            await message.channel.send(embed=embedVar)
+
 
 # driver
 client = MyClient()
