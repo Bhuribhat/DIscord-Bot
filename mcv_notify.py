@@ -81,6 +81,23 @@ def check_today_date(date_str):
     return is_today
 
 
+# check if it is within the past days in Thailand time
+def check_within_days(date_str, day):
+    date_obj = datetime.strptime(date_str, "%d %b %Y")
+
+    # convert datetime object to Thailand timezone
+    thailand_timezone = timezone(timedelta(hours=7))
+    date_obj_thailand = date_obj.astimezone(thailand_timezone)
+
+    # get today's date in Thailand
+    now = datetime.now(thailand_timezone)
+
+    # Check if date_obj is within the past 7 days from now
+    delta = timedelta(days=day)
+    within_days = (now - delta) <= date_obj_thailand <= now
+    return within_days
+
+
 # check if it is within the past 7 days in Thailand time
 def check_within_week(date_str):
     date_obj = datetime.strptime(date_str, "%d %b %Y")
@@ -112,7 +129,7 @@ def get_day_different(date_str):
     return date_delta
 
 
-def get_notifications():
+def get_notifications(days=7):
     scraper = Scraper()
     scraper.login(MCV_USERNAME, MCV_PASSWORD)
 
@@ -120,13 +137,13 @@ def get_notifications():
     notifications = scraper.scrape()
 
     for notification in notifications:
-        if not check_within_week(notification.created): continue
+        if not check_within_days(notification.created, int(days)): continue
         day_delta = get_day_different(notification.created)
 
-        noti_type   = f"Type    : {notification.type}"
+        noti_type   = f"Type    : {notification.type.title()}"
         noti_title  = f"Title   : {notification.title}"
         noti_create = f"Created : {notification.created} - {day_delta} days ago"
-        noti_link   = f"[Link]({URL + notification.link})"
+        noti_link   = f"[{notification.type.title()} Link]({URL + notification.link})"
 
         # week_notification += f"{noti_course}{noti_type}{noti_title}{noti_link}{noti_create}\n"
         each_notification = [notification.course, f"{noti_type}\n{noti_title}\n{noti_create}", noti_link]

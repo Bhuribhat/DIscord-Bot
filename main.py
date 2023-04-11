@@ -144,8 +144,7 @@ class MyClient(discord.Client):
         scheduler = AsyncIOScheduler()
 
         # sends inform at 7 AM (Local Time = London)
-        scheduler.add_job(inform, CronTrigger(hour="0", minute="0",
-                                              second="1"))
+        scheduler.add_job(inform, CronTrigger(hour="0", minute="0", second="1"))
         scheduler.start()
 
     # react to word and command
@@ -231,8 +230,7 @@ class MyClient(discord.Client):
                 gaming_chanel = client.get_channel(809839995287633950)
                 await gaming_chanel.send(text)
             else:
-                long_bot_channel = client.get_channel(
-                    928269670635671653)  # test
+                long_bot_channel = client.get_channel(928269670635671653)  # test
                 await long_bot_channel.send(text)
 
         # add new words
@@ -280,7 +278,9 @@ class MyClient(discord.Client):
                 title="Command | for all user",
                 url="https://discordpy.readthedocs.io/en/stable/",
                 description="prefix = '$' | ส่งข้อความอัตโนมัติทุก 7 โมงเช้า",
-                color=0x248f36)
+                color=0x248f36
+            )
+
             # embed.set_author(name="กายเองจ้า")
             embed.set_thumbnail(url="https://i.imgur.com/axLm3p6.jpeg")
             embed.add_field(name="General:",
@@ -291,8 +291,7 @@ class MyClient(discord.Client):
                             inline=True)
             embed.add_field(
                 name="Usage:",
-                value=
-                "`code language`, `responding true / false`, \n`add word`, `del index`, `random list`, \n`send channel text`, `plot number`, `qrcode data or link`, `master1 a b d`, \n`base num base want_base`, `master2 a b k`, \n`job keyword unwant_skill`, `poll title <list of choices>`",
+                value="`code language`, `responding true / false`, \n`add word`, `del index`, `random list`, \n`send channel text`, `plot number`, `qrcode data or link`, `master1 a b d`, \n`base num base want_base`, `master2 a b k`, \n`job keyword unwant_skill`, `poll title <list of choices>`, `noti <days>` ",
                 inline=False)
             embed.set_footer(text="-" * 30 + "\nIndividual study mini project")
             await message.channel.send(embed=embed)
@@ -620,7 +619,8 @@ class MyClient(discord.Client):
 
         # get mcv notifications within 1 week
         if msg.startswith("$noti"):
-            notifications = get_notifications()
+            days = msg.split("$noti")[1]
+            notifications = get_notifications(days)
             embedVar = discord.Embed(title="MCV Notification", color=discord.Color.blue())
             for notification in notifications:
                 value = f"```{notification[1]}```{notification[2]}\n"
