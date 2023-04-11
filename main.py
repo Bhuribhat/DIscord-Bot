@@ -621,9 +621,9 @@ class MyClient(discord.Client):
         # get mcv notifications within 1 week
         if msg.startswith("$noti"):
             notifications = get_notifications()
-            embedVar = discord.Embed(title="MCV Notification", color=0x00ff00)
+            embedVar = discord.Embed(title="MCV Notification", color=discord.Color.blue())
             for notification in notifications:
-                value = f"```{notification[1]}```\n{notification[2]}"
+                value = f"```{notification[1]}```{notification[2]}\n"
                 embedVar.add_field(name=notification[0], value=value, inline=False)
             await message.channel.send(embed=embedVar)
 
