@@ -92,8 +92,8 @@ def check_within_days(date_str, day):
     # get today's date in Thailand
     now = datetime.now(thailand_timezone)
 
-    # Check if date_obj is within the past 7 days from now
-    delta = timedelta(days=day)
+    # Check if date_obj is within the past days from now
+    delta = timedelta(days=day + 1)
     within_days = (now - delta) <= date_obj_thailand <= now
     return within_days
 

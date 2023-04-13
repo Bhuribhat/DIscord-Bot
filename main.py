@@ -619,8 +619,8 @@ class MyClient(discord.Client):
 
         # get mcv notifications within 1 week
         if msg.startswith("$noti"):
-            days = msg.split("$noti")[1]
-            days = 7 if days.strip() == '' else days
+            days = msg.split("$noti")[1].strip()
+            days = '7' if days == '' else days
             notifications = get_notifications(days)
             embedVar = discord.Embed(title="MCV Notification", color=discord.Color.blue())
             for notification in notifications:
