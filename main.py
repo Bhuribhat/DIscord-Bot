@@ -291,7 +291,7 @@ class MyClient(discord.Client):
                             inline=True)
             embed.add_field(
                 name="Usage:",
-                value="`code language`, `responding true / false`, \n`add word`, `del index`, `random list`, \n`send channel text`, `plot number`, `qrcode data or link`, `master1 a b d`, \n`base num base want_base`, `master2 a b k`, \n`job keyword unwant_skill`, `poll title <list of choices>`, `noti <days>` ",
+                value="`code language`, `responding true / false`, \n`add word`, `del index`, `random list`, \n`send channel text`, `plot number`, `qrcode data or link`, `master1 a b d`, \n`base num base want_base`, `master2 a b k`, \n`job keyword unwant_skill`, `poll title <list of choices>`, `noti <days> <type>` ",
                 inline=False)
             embed.set_footer(text="-" * 30 + "\nIndividual study mini project")
             await message.channel.send(embed=embed)
@@ -619,12 +619,28 @@ class MyClient(discord.Client):
 
         # get mcv notifications within 1 week
         if msg.startswith("$noti"):
-            days = msg.split("$noti")[1].strip()
-            days = '7' if days == '' else days
-            notifications = get_notifications(days)
+            attr = msg.split("$noti")[1].split()
+            if len(attr) > 2:
+                await message.channel.send("__**usage**__: `$noti days type`")
+                await message.channel.send("type must be between `Assignment, Material, Announcement`")
+                return
+
+            if len(attr) == 0:
+                notifications = get_notifications()
+            elif len(attr) == 1:
+                if attr[0].isnumeric():
+                    notifications = get_notifications(days=attr[0])
+                elif attr[0].title() in ['Assignment', 'Material', 'Announcement']:
+                    notifications = get_notifications(select=attr[0])
+                else:
+                    await message.channel.send("type must be between `Assignment, Material, Announcement`")
+                    return
+            else:
+                notifications = get_notifications(attr[0], attr[1])
+
             embedVar = discord.Embed(title="MCV Notification", color=discord.Color.blue())
             for notification in notifications:
-                value = f"```{notification[1]}```{notification[2]}\n"
+                value = f"```{notification[1]}```{notification[2]}"
                 embedVar.add_field(name=notification[0], value=value, inline=False)
             await message.channel.send(embed=embedVar)
 

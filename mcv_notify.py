@@ -7,7 +7,7 @@ from datetime import datetime, timezone, timedelta
 MCV_USERNAME = os.environ['MCV_USERNAME']
 MCV_PASSWORD = os.environ['MCV_PASSWORD']
 
-URL = "https://www.mycourseville.com/"
+URL = "https://www.mycourseville.com"
 
 
 class Notification:
@@ -26,12 +26,12 @@ class Scraper:
         self.init()
 
     def init(self):
-        r = self.s.get('https://www.mycourseville.com/api/oauth/authorize?response_type=code&client_id=mycourseville.com&redirect_uri=https://www.mycourseville.com')
+        r = self.s.get(f'{URL}/api/oauth/authorize?response_type=code&client_id=mycourseville.com&redirect_uri={URL}')
         soup = BeautifulSoup(r.text, 'html.parser')
         self.form_token = soup.find('input', {'name': '_token'}).get('value')
 
     def login(self, username, password):
-        r = self.s.post('https://www.mycourseville.com/api/chulalogin', data={
+        r = self.s.post(f'{URL}/api/chulalogin', data={
             '_token': self.form_token,
             'loginfield': 'name',
             'username': username,
@@ -42,7 +42,7 @@ class Scraper:
 
     def scrape(self):
         r = self.s.get(
-            'https://www.mycourseville.com/?q=courseville/course/notification'
+            f'{URL}/?q=courseville/course/notification'
         )
         soup = BeautifulSoup(r.text, 'html.parser')
         items = soup.find_all('a', {'class': 'courseville-feed-item'})
@@ -54,11 +54,16 @@ class Scraper:
             )
             notifications.append(
                 Notification(
-                    course=item.find('div', {'class': 'courseville-feed-item-course'}).text.strip(),
-                    type=item.find('div', {'class': 'courseville-feed-item-type'}).text.strip(),
-                    title=item.find('div', {'class': 'courseville-feed-item-title'}).text.strip(),
-                    created=re.search(r"Created on (.+)      -- (?:.+)", created.text).group(1),
-                    icon_img=item.find('img', {'class': 'courseville-feed-item-icon-img'}).get('src'),
+                    course=item.find(
+                        'div', {'class': 'courseville-feed-item-course'}).text.strip(),
+                    type=item.find(
+                        'div', {'class': 'courseville-feed-item-type'}).text.strip(),
+                    title=item.find(
+                        'div', {'class': 'courseville-feed-item-title'}).text.strip(),
+                    created=re.search(
+                        r"Created on (.+)      -- (?:.+)", created.text).group(1),
+                    icon_img=item.find(
+                        'img', {'class': 'courseville-feed-item-icon-img'}).get('src'),
                     link=item.get("href")
                 )
             )
@@ -110,7 +115,7 @@ def check_within_week(date_str):
     now = datetime.now(thailand_timezone)
 
     # Check if date_obj is within the past 7 days from now
-    delta = timedelta(days=7)
+    delta = timedelta(days=7 + 1)
     within_7_days = (now - delta) <= date_obj_thailand <= now
     return within_7_days
 
@@ -129,7 +134,7 @@ def get_day_different(date_str):
     return date_delta
 
 
-def get_notifications(days=7):
+def get_notifications(days=7, select=None):
     scraper = Scraper()
     scraper.login(MCV_USERNAME, MCV_PASSWORD)
 
@@ -143,10 +148,10 @@ def get_notifications(days=7):
         noti_type   = f"Type    : {notification.type.title()}"
         noti_title  = f"Title   : {notification.title}"
         noti_create = f"Created : {notification.created} - {day_delta} days ago"
-        noti_link   = f"[{notification.type.title()} Link]({URL + notification.link})"
+        noti_link   = f"[{notification.type.title()} Link]({URL}/{notification.link})"
 
-        # week_notification += f"{noti_course}{noti_type}{noti_title}{noti_link}{noti_create}\n"
-        each_notification = [notification.course, f"{noti_type}\n{noti_title}\n{noti_create}", noti_link]
-        week_notification.append(each_notification)
+        if select is None or select.title() == notification.type.title():
+            each_notification = [notification.course, f"{noti_type}\n{noti_title}\n{noti_create}", noti_link]
+            week_notification.append(each_notification)
 
     return week_notification
