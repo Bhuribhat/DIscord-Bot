@@ -32,6 +32,6 @@ useful command
 <img src="./resources/image6.png" width="500"></a>
 
 - Notification  
-**usage**: $noti [days] 
+**usage**: $noti [days] [type]
 <p align="left">
 <img src="./resources/image7.png" width="500"></a>
