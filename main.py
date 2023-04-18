@@ -22,14 +22,14 @@ words    = ['ว่าไง', 'มา', 'เหงา', 'หิว', 'ง่ว
 interact = ['โอ้ววว', 'ไงเงา', 'ฝันดีน้า', 'เยลโล่ว', 'อู้วววววว']
 
 schedule = {
-    "monday":  "13.00 - 16.00 PM : [Computer Vision](https://www.mycourseville.com/?q=courseville/course/32214)\n"\
-                "13.00 - 16.00 PM : [Neural Network](https://sites.google.com/view/ssukree/courses/2110571-neural-network-22022?authuser=0)",
-    "tuesday":  "08.00 - 09.30 AM : [Software Eng II](https://www.mycourseville.com/?q=courseville/course/32207)\n"\
-                "09.30 - 12.30 AM : [OS Sys Prog](https://www.mycourseville.com/?q=courseville/course/32203)\n"\
-                "13.00 - 16.00 PM : [Data Sci/Eng](https://www.mycourseville.com/?q=courseville/course/32215)",
-    "wednesday":"09.00 - 12.00 AM : [Comp Network I](https://www.mycourseville.com/?q=courseville/course/32216)",
-    "thursday": "08.00 - 09.30 AM : [Software Eng II](https://www.mycourseville.com/?q=courseville/course/32207)",
-    "friday":   "09.00 - 12.00 AM : [Tech Writing Eng](https://sites.google.com/view/5500308-s12-s2-22/home)"
+    "monday":    "13.00 - 16.00 PM : [Computer Vision](https://www.mycourseville.com/?q=courseville/course/32214)\n"\
+                 "13.00 - 16.00 PM : [Neural Network](https://sites.google.com/view/ssukree/courses/2110571-neural-network-22022?authuser=0)",
+    "tuesday":   "08.00 - 09.30 AM : [Software Eng II](https://www.mycourseville.com/?q=courseville/course/32207)\n"\
+                 "09.30 - 12.30 AM : [OS Sys Prog](https://www.mycourseville.com/?q=courseville/course/32203)\n"\
+                 "13.00 - 16.00 PM : [Data Sci/Eng](https://www.mycourseville.com/?q=courseville/course/32215)",
+    "wednesday": "09.00 - 12.00 AM : [Comp Network I](https://www.mycourseville.com/?q=courseville/course/32216)",
+    "thursday":  "08.00 - 09.30 AM : [Software Eng II](https://www.mycourseville.com/?q=courseville/course/32207)",
+    "friday":    "09.00 - 12.00 AM : [Tech Writing Eng](https://sites.google.com/view/5500308-s12-s2-22/home)"
 }
 
 # initial data to replit's database
@@ -234,8 +234,8 @@ class MyClient(discord.Client):
                 gaming_chanel = client.get_channel(809839995287633950)
                 await gaming_chanel.send(text)
             else:
-                long_bot_channel = client.get_channel(928269670635671653)  # test channel
-                await long_bot_channel.send(text)
+                test_bot_channel = client.get_channel(928269670635671653)  # test channel
+                await test_bot_channel.send(text)
 
         # add new words
         if msg.startswith('$add'):
@@ -285,35 +285,34 @@ class MyClient(discord.Client):
         # Display all commands usage
         if msg.startswith('$help'):
             embed = discord.Embed(
-                title="❓ How to use commands",
+                title="How to use commands",
                 url="https://discordpy.readthedocs.io/en/stable/",
-                description="use prefix '$' | automatically send schedule at 7 am",
+                description="use prefix $ | Automatically send schedule at 7 am",
                 color=discord.Color.blue()
             )
 
             command_lists = [
-                {'name': '$guess', 'usage': 'Guess the number from 1-10\nYou have only 1 guess!'},
-                {'name': '$send', 'usage': 'Send anonymous message to discord channel\nsend [channel] [text]'},
-                {'name': '$responding', 'usage': 'Toggle interacting to user message\nresponding [true / false]'},
-                {'name': '$list', 'usage': 'Display word for interacting from database'},
-                {'name': '$add', 'usage': 'Add word for interacting to database\nadd [word]'},
-                {'name': '$del', 'usage': 'Delete word for interacting from database\ndel [index or word]'},
-                {'name': '$random', 'usage': 'Random element from list of things\nrandom [list of things]'},
-                {'name': '$qrcode', 'usage': 'Create QR-Code and send it to discord channel\nqrcode [data or link]'},
-                {'name': '$poll', 'usage': 'Create poll with reaction up to 9 choices\npoll [title] [list of choices]'},
-                {'name': '$code', 'usage': 'Create codeblock of computer language\ncode [language]'},
-                {'name': '$cal', 'usage': 'Interact with user message as calculator\nType \'บาย\' to quit'},
-                {'name': '$base', 'usage': 'Convert number base\nbase [number] [original_base] [result_base]'},
-                {'name': '$master1', 'usage': 'Master Theorem for divide function\nmaster1 [a] [b] [d]'},
-                {'name': '$master2', 'usage': 'Master Theorem for decrease function\nmaster2 [a] [b] [k]'},
-                {'name': '$plot', 'usage': 'Scatter Plot random points with vary color and size \nplot [number]'},
-                {'name': '$inform', 'usage': 'Inform author\'s daily schedule'},
-                {'name': '$job', 'usage': 'Scrape filtered jobs from website\njob [keyword] [unwant skill]'},
-                {'name': '$noti', 'usage': 'Scrape notification from MyCourseVille\nnoti [days] [type]'},
+                {'name': '$guess', 'usage': 'Guess number from 1-10\nYou have only 1 guess!'},
+                {'name': '$send', 'usage': 'Send anonymous message\n`send [channel] [text]`'},
+                {'name': '$responding', 'usage': 'Toggle interact message\n`responding [bool]`'},
+                {'name': '$list', 'usage': 'Display all interacting words in database'},
+                {'name': '$add', 'usage': 'Add word \n`add [word]`'},
+                {'name': '$del', 'usage': 'Delete word\n`del [index / word]`'},
+                {'name': '$random', 'usage': 'Random from list\n`random [list]`'},
+                {'name': '$qrcode', 'usage': 'Create QR-Code\n`qrcode [data / link]`'},
+                {'name': '$poll', 'usage': 'Create poll with reaction\n`poll [title] [list]`'},
+                {'name': '$code', 'usage': 'Create codeblock\n`code [language]`'},
+                {'name': '$cal', 'usage': 'Act as a calculator\nType `บาย` to quit'},
+                {'name': '$base', 'usage': 'Convert number base\n`base [number] [old_base] [new_base]`'},
+                {'name': '$master1', 'usage': 'Master Theorem for dividing function\n`master1 [a] [b] [d]`'},
+                {'name': '$master2', 'usage': 'Master Theorem for decrease function\n`master2 [a] [b] [k]`'},
+                {'name': '$plot', 'usage': 'Plot random points with various size\n`plot [number]`'},
+                {'name': '$inform', 'usage': 'Inform current `author`\'s schedule'},
+                {'name': '$job', 'usage': 'Filter jobs from website\n`job [keyword] [filter]`'},
+                {'name': '$noti', 'usage': 'Notification from MCV\n`noti [days] [type]`'},
             ]
 
-            # embed.set_author(name="Bhuribhat Ratanasanhuanvongs")
-            embed.set_thumbnail(url="https://i.pinimg.com/originals/13/8d/52/138d52a8f429510e2c16bd67990dae3c.jpg")
+            # embed.set_thumbnail(url="https://i.pinimg.com/originals/13/8d/52/138d52a8f429510e2c16bd67990dae3c.jpg")
             for command in command_lists:
                 embed.add_field(
                     name=command['name'],
@@ -321,8 +320,9 @@ class MyClient(discord.Client):
                     inline=True
                 )
 
+            # embed.set_author(name="Aqioz")
             Aqioz_id = os.environ['AQIOZ_ID']
-            embed.set_footer(text=f"Author: {Aqioz_id} Email: Bhuribhat@gmail.com")
+            embed.add_field(name="__**Author**__", value=f"> {Aqioz_id}\n> Bhuribhat@gmail.com", inline=False)
             await message.channel.send(embed=embed)
 
         # calculator command
