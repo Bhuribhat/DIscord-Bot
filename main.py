@@ -292,7 +292,7 @@ class MyClient(discord.Client):
             )
 
             command_lists = [
-                {'name': '$guess', 'usage': 'Guess number from 1-10\nYou have only 1 guess!'},
+                {'name': '$guess', 'usage': 'Guess number from 1-10\nYou only have 1 guess!'},
                 {'name': '$send', 'usage': 'Send anonymous message\n`send [channel] [text]`'},
                 {'name': '$responding', 'usage': 'Toggle interact message\n`responding [bool]`'},
                 {'name': '$list', 'usage': 'Display all interacting words in database'},
