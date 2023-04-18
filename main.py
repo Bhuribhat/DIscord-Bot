@@ -18,7 +18,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 TOKEN = os.environ['TOKEN']
 
 # variable
-words = ['ว่าไง', 'มา', 'เหงา', 'หิว', 'ง่วง', 'โหล', 'เอาเลย', 'ดี']
+words    = ['ว่าไง', 'มา', 'เหงา', 'หิว', 'ง่วง', 'โหล', 'เอาเลย', 'ดี']
 interact = ['โอ้ววว', 'ไงเงา', 'ฝันดีน้า', 'เยลโล่ว', 'อู้วววววว']
 
 schedule = {
@@ -50,10 +50,17 @@ def add_words(new_word):
         db["interact"] = [new_word]
 
 
+# function to update word in database
 def delete_word(index):
     interact = db["interact"]
-    if len(interact) > index:
-        del interact[index]
+
+    if index.isdigit():
+        if len(interact) > index:
+            del interact[index]
+            db["interact"] = interact
+
+    elif index in interact:
+        interact.remove(index)
         db["interact"] = interact
 
 
@@ -136,8 +143,7 @@ class MyClient(discord.Client):
     # introduce yourself
     async def on_ready(self):
         await client.wait_until_ready()
-        await client.change_presence(activity=discord.Game(
-            name="$help | มาาาาาา"))
+        await client.change_presence(activity=discord.Game(name="$help"))
         print('We have logged in as {0.user}'.format(client))
 
         # initializing scheduler -> London : timezone="Asia/Bangkok"
@@ -184,8 +190,8 @@ class MyClient(discord.Client):
         if 'จิง' in msg:
             await message.channel.send('ฮ้อยย้าา')
 
-        # หิวข้าวจัง
-        if msg.startswith('กินไรดี'):
+        # food menu
+        if msg.startswith('กินไร'):
             menu = ["กระเพราหมูสับ", "โจ๊กหมูขอฮาๆ", 'ข้าวไข่เจียว', 'ข้าวไข่ดาว', 'ข้าวไข่ข้น', 'ข้าวไข่ต้ม']
             idx_answer = random.randint(0, len(menu))
             result = menu[idx_answer]
@@ -201,9 +207,7 @@ class MyClient(discord.Client):
             answer = random.randint(1, 10)
 
             try:
-                guess = await self.wait_for('message',
-                                            check=is_correct,
-                                            timeout=5.0)
+                guess = await self.wait_for('message', check=is_correct, timeout=5.0)
             except asyncio.TimeoutError:
                 return await message.channel.send(
                     'ช้าปายย {}.'.format(answer))
@@ -230,7 +234,7 @@ class MyClient(discord.Client):
                 gaming_chanel = client.get_channel(809839995287633950)
                 await gaming_chanel.send(text)
             else:
-                long_bot_channel = client.get_channel(928269670635671653)  # test
+                long_bot_channel = client.get_channel(928269670635671653)  # test channel
                 await long_bot_channel.send(text)
 
         # add new words
@@ -241,6 +245,12 @@ class MyClient(discord.Client):
 
         # delete word in interact
         if msg.startswith("$del"):
+            if msg.split("$del", 1)[1] == '':
+                interact = list(db["interact"])
+                list_of_word = ", ".join(interact)
+                await message.channel.send("`" + list_of_word + "`")
+                return await message.channel.send(interact)
+
             interact = []
             if "interact" in db.keys():
                 index = int(msg.split("$del", 1)[1])
@@ -267,33 +277,52 @@ class MyClient(discord.Client):
 
             if value.lower() == "true":
                 db["responding"] = True
-                await message.channel.send("ออนไลน์เพื่อเทอ 24 ชม")
+                await message.channel.send("online now!")
             else:
                 db["responding"] = False
-                await message.channel.send("ไปละ งอน")
+                await message.channel.send("offline bye!")
 
-        # help function
+        # Display all commands usage
         if msg.startswith('$help'):
             embed = discord.Embed(
-                title="Command | for all user",
+                title="❓ How to use commands",
                 url="https://discordpy.readthedocs.io/en/stable/",
-                description="prefix = '$' | ส่งข้อความอัตโนมัติทุก 7 โมงเช้า",
-                color=0x248f36
+                description="use prefix '$' | automatically send schedule at 7 am",
+                color=discord.Color.blue()
             )
 
-            # embed.set_author(name="กายเองจ้า")
-            embed.set_thumbnail(url="https://i.imgur.com/axLm3p6.jpeg")
-            embed.add_field(name="General:",
-                            value="`guess, send, responding, list, add, del, qrcode, poll`",
-                            inline=True)
-            embed.add_field(name="Study:",
-                            value="`code, cal, random, plot, master1, master1, base, job, noti`",
-                            inline=True)
-            embed.add_field(
-                name="Usage:",
-                value="`code language`, `responding true / false`, \n`add word`, `del index`, `random list`, \n`send channel text`, `plot number`, `qrcode data or link`, `master1 a b d`, \n`base num base want_base`, `master2 a b k`, \n`job keyword unwant_skill`, `poll title <list of choices>`, `noti <days> <type>` ",
-                inline=False)
-            embed.set_footer(text="-" * 30 + "\nIndividual study mini project")
+            command_lists = [
+                {'name': '$guess', 'usage': 'Guess the number from 1-10\nYou have only 1 guess!'},
+                {'name': '$send', 'usage': 'Send anonymous message to discord channel\nsend [channel] [text]'},
+                {'name': '$responding', 'usage': 'Toggle interacting to user message\nresponding [true / false]'},
+                {'name': '$list', 'usage': 'Display word for interacting from database'},
+                {'name': '$add', 'usage': 'Add word for interacting to database\nadd [word]'},
+                {'name': '$del', 'usage': 'Delete word for interacting from database\ndel [index or word]'},
+                {'name': '$random', 'usage': 'Random element from list of things\nrandom [list of things]'},
+                {'name': '$qrcode', 'usage': 'Create QR-Code and send it to discord channel\nqrcode [data or link]'},
+                {'name': '$poll', 'usage': 'Create poll with reaction up to 9 choices\npoll [title] [list of choices]'},
+                {'name': '$code', 'usage': 'Create codeblock of computer language\ncode [language]'},
+                {'name': '$cal', 'usage': 'Interact with user message as calculator\nType \'บาย\' to quit'},
+                {'name': '$base', 'usage': 'Convert number base\nbase [number] [original_base] [result_base]'},
+                {'name': '$master1', 'usage': 'Master Theorem for divide function\nmaster1 [a] [b] [d]'},
+                {'name': '$master2', 'usage': 'Master Theorem for decrease function\nmaster2 [a] [b] [k]'},
+                {'name': '$plot', 'usage': 'Scatter Plot random points with vary color and size \nplot [number]'},
+                {'name': '$inform', 'usage': 'Inform author\'s daily schedule'},
+                {'name': '$job', 'usage': 'Scrape filtered jobs from website\njob [keyword] [unwant skill]'},
+                {'name': '$noti', 'usage': 'Scrape notification from MyCourseVille\nnoti [days] [type]'},
+            ]
+
+            # embed.set_author(name="Bhuribhat Ratanasanhuanvongs")
+            embed.set_thumbnail(url="https://i.pinimg.com/originals/13/8d/52/138d52a8f429510e2c16bd67990dae3c.jpg")
+            for command in command_lists:
+                embed.add_field(
+                    name=command['name'],
+                    value=command['usage'],
+                    inline=True
+                )
+
+            Aqioz_id = os.environ['AQIOZ_ID']
+            embed.set_footer(text=f"Author: {Aqioz_id} Email: Bhuribhat@gmail.com")
             await message.channel.send(embed=embed)
 
         # calculator command
@@ -314,22 +343,20 @@ class MyClient(discord.Client):
                         await message.channel.send("บายน้า")
                 except asyncio.TimeoutError:
                     return await message.channel.send('ไปละปวดหมอง')
-                    break
 
         # coding template
         if msg.startswith("$code"):
-            lang = msg.split("$code ", 1)[1]
+            language = msg.split("$code ", 1)[1]
             embedVar = discord.Embed(title="Coding Template",
-                                     description=f"` ```{lang}\n`\t `\n``` `",
+                                     description=f"` ```{language}\n`\t `\n``` `",
                                      color=0x00ff00)
             embedVar.add_field(name="Description",
-                               value=f"Template for {lang} language",
+                               value=f"Template for {language} language",
                                inline=False)
-            # await message.channel.send(embed=embedVar)
             study_room_channel = client.get_channel(808174559529926666)
             await study_room_channel.send(embed=embedVar)
 
-            # random list of thing split by comma (",")
+        # random list of thing split by comma (",")
         if msg.startswith("$random"):
             list_thing = msg.split("$random", 1)[1].split(",")
             if (list_thing == ['']):
@@ -603,7 +630,7 @@ class MyClient(discord.Client):
                 await message.channel.send("__**usage**__: `$poll title <list of choice>`")
                 return
             if (len(choices) > len(emoji) + 1):
-                await message.channel.send("I give up.")
+                await message.channel.send("too much bro")
                 return
 
             title = choices[0]
