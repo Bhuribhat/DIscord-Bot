@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 
 from replit import db
 from datetime import datetime
+from meme import meme_stealer
 from keep_alive import keep_alive
 from web_scrapping import find_jobs
 from mcv_notify import get_notifications
@@ -310,6 +311,7 @@ class MyClient(discord.Client):
                 {'name': '$inform', 'usage': 'Inform current `author`\'s schedule'},
                 {'name': '$job', 'usage': 'Filter jobs from website\n`job [keyword] [filter]`'},
                 {'name': '$noti', 'usage': 'Notification from MCV\n`noti [days] [type]`'},
+                {'name': '$meme', 'usage': 'Random meme go brrrr'},
             ]
 
             # embed.set_thumbnail(url="https://i.pinimg.com/originals/13/8d/52/138d52a8f429510e2c16bd67990dae3c.jpg")
@@ -670,6 +672,11 @@ class MyClient(discord.Client):
                 value = f"```{notification[1]}```{notification[2]}"
                 embedVar.add_field(name=notification[0], value=value, inline=False)
             await message.channel.send(embed=embedVar)
+
+        # send meme
+        if msg.startswith("$meme"):
+            meme_stealer()
+            await message.channel.send(file=discord.File('.\\assets\\meme.png'))
 
 
 # driver
