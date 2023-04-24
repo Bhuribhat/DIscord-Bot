@@ -7,6 +7,7 @@ import discord
 import numpy as np
 import matplotlib.pyplot as plt
 
+from view import *
 from replit import db
 from datetime import datetime
 from meme import meme_stealer
@@ -124,13 +125,16 @@ async def inform():
             title="Schedule",
             url="https://docs.google.com/document/d/1C1sF4aS6kFjqWBtU91vSYUvTSxdh9xxXhA9LeUUTbXg/edit#heading=h.8sb6c0hcl62a",
             description=schedule[day_of_week],
-            color=discord.Color.blue())
+            color=discord.Color.blue()
+        )
         embedVar.add_field(
             name="Days of week",
             value="For " + datetime.today().strftime('%A') +
             " | [MCV](https://www.mycourseville.com/?q=courseville)" +
             " [Grader](https://nattee.net/grader)",
-            inline=False)
+            inline=False
+        )
+
         # embedVar.set_author(name="", icon_url="")
         study_room_channel = client.get_channel(808174559529926666)
         Aqioz_id = os.environ['AQIOZ_ID']
@@ -139,7 +143,7 @@ async def inform():
 
 
 # Class Client
-class MyClient(discord.Client):
+class DiscordClient(discord.Client):
 
     # introduce yourself
     async def on_ready(self):
@@ -311,7 +315,9 @@ class MyClient(discord.Client):
                 {'name': '$inform', 'usage': 'Inform current `author`\'s schedule'},
                 {'name': '$job', 'usage': 'Filter jobs from website\n`job [keyword] [filter]`'},
                 {'name': '$noti', 'usage': 'Notification from MCV\n`noti [days] [type]`'},
+                {'name': '$invite', 'usage': 'Send invitation link'},
                 {'name': '$meme', 'usage': 'Random meme go brrrr'},
+                {'name': '$join', 'usage': 'join voice channel'},
             ]
 
             # embed.set_thumbnail(url="https://i.pinimg.com/originals/13/8d/52/138d52a8f429510e2c16bd67990dae3c.jpg")
@@ -324,8 +330,8 @@ class MyClient(discord.Client):
 
             # embed.set_author(name="Aqioz")
             Aqioz_id = os.environ['AQIOZ_ID']
-            embed.add_field(name="__**Author**__", value=f"> {Aqioz_id}\n> Bhuribhat@gmail.com", inline=False)
-            await message.channel.send(embed=embed)
+            embed.add_field(name="__**Author**__", value=f"> Bhuribhat@gmail.com\n> {Aqioz_id}", inline=False)
+            await message.channel.send(embed=embed, view=GithubButton())
 
         # calculator command
         if msg.startswith("$cal"):
@@ -348,15 +354,23 @@ class MyClient(discord.Client):
 
         # coding template
         if msg.startswith("$code"):
-            language = msg.split("$code ", 1)[1]
-            embedVar = discord.Embed(title="Coding Template",
-                                     description=f"` ```{language}\n`\t `\n``` `",
-                                     color=0x00ff00)
-            embedVar.add_field(name="Description",
-                               value=f"Template for {language} language",
-                               inline=False)
+            language = msg.split("$code", 1)[1].strip()
             study_room_channel = client.get_channel(808174559529926666)
-            await study_room_channel.send(embed=embedVar)
+
+            if language != '':
+                embedVar = discord.Embed(
+                    title="Coding Template",
+                    description=f"` ```{language}\n`\t `\n``` `",
+                    color=0x00ff00
+                )
+                embedVar.add_field(
+                    name="Description",
+                    value=f"Template for {language} language",
+                    inline=False
+                )
+                await study_room_channel.send(embed=embedVar)
+            else:
+                await study_room_channel.send(view=CodeMenu())
 
         # random list of thing split by comma (",")
         if msg.startswith("$random"):
@@ -678,8 +692,22 @@ class MyClient(discord.Client):
             meme_stealer()
             await message.channel.send(file=discord.File('.\\assets\\meme.png'))
 
+        # send invitation
+        if msg.startswith("$invite"):
+            inv = await message.channel.create_invite()
+            await message.channel.send("Click the button below to invite someone!", view=InviteButton(str(inv)))
 
-# driver
-client = MyClient()
-keep_alive()
-client.run(TOKEN)
+        # join voice channel
+        if msg.startswith("$join"):
+            channel = message.author.voice.channel
+            await channel.connect()
+
+
+if __name__ == '__main__':
+    intents = discord.Intents.default()
+    intents.message_content = True
+
+    # driver code
+    client = DiscordClient()
+    keep_alive()
+    client.run(TOKEN)
