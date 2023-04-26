@@ -2,10 +2,10 @@
 
 ## Instruction
 
-to use discord-ui, you need to update ui components by:
+to use discord-ui:
 
 ```sh
->> pip install -U git+https://github.com/Rapptz/discord.py
+>> pip install discord-ui
 ```
 
 ## useful command

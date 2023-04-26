@@ -1,6 +1,7 @@
 import os
 
 TOKEN = os.environ['TOKEN']
+CP_DOCS = "https://docs.google.com/document/d/1C1sF4aS6kFjqWBtU91vSYUvTSxdh9xxXhA9LeUUTbXg/edit#heading=h.8sb6c0hcl62a"
 
 # variable
 words    = ['ว่าไง', 'มา', 'เหงา', 'หิว', 'ง่วง', 'โหล', 'เอาเลย', 'ดี']

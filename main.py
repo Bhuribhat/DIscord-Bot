@@ -7,6 +7,11 @@ import discord
 import numpy as np
 import matplotlib.pyplot as plt
 
+# pip install discord-ui
+import subprocess
+subprocess.run(["pip", "install", "discord-ui"])
+
+# import UI and constants
 from view import *
 from constants import *
 
@@ -59,7 +64,7 @@ async def inform():
     if (day_of_week != "saturday") and (day_of_week != "sunday"):
         embedVar = discord.Embed(
             title="Schedule",
-            url="https://docs.google.com/document/d/1C1sF4aS6kFjqWBtU91vSYUvTSxdh9xxXhA9LeUUTbXg/edit#heading=h.8sb6c0hcl62a",
+            url=CP_DOCS,
             description=schedule[day_of_week],
             color=discord.Color.blue()
         )
