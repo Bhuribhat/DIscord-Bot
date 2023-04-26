@@ -1,6 +1,6 @@
 # Discord-Bot
 
-## Instruction
+### Instruction
 
 to use discord-ui:
 
@@ -8,11 +8,13 @@ to use discord-ui:
 >> pip install discord-ui
 ```
 
-## useful command
 
-- Send schedule every 7 am
+Send schedule every 7 am
 <p align="left">
 <img src="./resources/image2.png" width="500"></a>
+
+
+### Useful Commands
 
 - Help command  
 **usage**: $help
