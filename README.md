@@ -1,8 +1,16 @@
 # Discord-Bot
 
-useful command
+## Instruction
 
-- Send schedule every 7 a.m.
+to use discord-ui, you need to update ui components by:
+
+```sh
+>> pip install -U git+https://github.com/Rapptz/discord.py
+```
+
+## useful command
+
+- Send schedule every 7 am
 <p align="left">
 <img src="./resources/image2.png" width="500"></a>
 
