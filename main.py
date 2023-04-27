@@ -613,22 +613,14 @@ class DiscordClient(discord.Client):
 
             if len(attr) == 0:
                 notifications = get_notifications()
-            elif len(attr) == 1:
-                if attr[0].isnumeric():
-                    notifications = get_notifications(days=attr[0])
-                elif attr[0].title() in ['Assignment', 'Material', 'Announcement']:
-                    notifications = get_notifications(select=attr[0])
-                else:
-                    await message.channel.send("type must be between `Assignment, Material, Announcement`")
-                    return
+                embedVar = discord.Embed(title="MCV Notification", color=discord.Color.blue())
+                for notification in notifications:
+                    value = f"```{notification[1]}```{notification[2]}"
+                    embedVar.add_field(name=notification[0], value=value, inline=False)
+                await message.channel.send(embed=embedVar)
             else:
-                notifications = get_notifications(attr[0], attr[1])
+                await message.channel.send(view=NotiMenu())
 
-            embedVar = discord.Embed(title="MCV Notification", color=discord.Color.blue())
-            for notification in notifications:
-                value = f"```{notification[1]}```{notification[2]}"
-                embedVar.add_field(name=notification[0], value=value, inline=False)
-            await message.channel.send(embed=embedVar)
 
         # send meme
         if msg.startswith("$meme"):

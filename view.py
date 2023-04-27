@@ -1,4 +1,5 @@
 import discord
+from mcv_notify import get_notifications
 
 
 # defining the class for creating a button
@@ -76,4 +77,92 @@ class CodeMenu(discord.ui.View):
             value=f"Template for {select.values[0]} language",
             inline=False
         )
+        await interaction.response.send_message(embed=embedVar)
+
+
+class NotiMenu(discord.ui.View):
+
+    # the decorator that lets you specify the properties of the select menu
+    @discord.ui.select(
+
+        # the placeholder text that will be displayed if nothing is selected
+        placeholder="Choose a filters!",
+
+        min_values=1,  # the minimum number of values that must be selected by the users
+        max_values=2,  # the maximum number of values that can be selected by the users
+
+        options=[
+
+            # Filter by Type
+            discord.SelectOption(
+                label="Announcment",
+                description="Pick Type Announcment!"
+            ),
+            discord.SelectOption(
+                label="Assignment",
+                description="Pick Type Assignment!"
+            ),
+            discord.SelectOption(
+                label="Material",
+                description="Pick Type Material!"
+            ),
+
+            # Filter by days
+            discord.SelectOption(
+                emoji="0️⃣",
+                label="0 Days",
+                description="Within today!"
+            ),
+            discord.SelectOption(
+                emoji="1️⃣",
+                label="1 Days",
+                description="Within 1 day!"
+            ),
+            discord.SelectOption(
+                emoji="2️⃣",
+                label="2 Days",
+                description="Within 2 days!"
+            ),
+            discord.SelectOption(
+                emoji="3️⃣",
+                label="3 Days",
+                description="Within 3 days!"
+            ),
+            discord.SelectOption(
+                emoji="4️⃣",
+                label="4 Days",
+                description="Within 4 days!"
+            ),
+            discord.SelectOption(
+                emoji="5️⃣",
+                label="5 Days",
+                description="Within 5 days!"
+            ),
+            discord.SelectOption(
+                emoji="6️⃣",
+                label="6 Days",
+                description="Within 6 days!"
+            ),
+            discord.SelectOption(
+                emoji="7️⃣",
+                label="7 Days",
+                description="Within 7 days!"
+            ),
+        ]
+    )
+
+    # the function called when the user is done selecting options
+    async def select_callback(self, interaction, select):
+        if len(select.values) == 1:
+            if select.values[0].isnumeric():
+                notifications = get_notifications(days=select.values[0])
+            elif select.values[0].title() in ['Assignment', 'Material', 'Announcement']:
+                notifications = get_notifications(select=select.values[0])
+        else:
+            notifications = get_notifications(select.values[1], select.values[0])
+
+        embedVar = discord.Embed(title="MCV Notification", color=discord.Color.blue())
+        for notification in notifications:
+            value = f"```{notification[1]}```{notification[2]}"
+            embedVar.add_field(name=notification[0], value=value, inline=False)
         await interaction.response.send_message(embed=embedVar)
