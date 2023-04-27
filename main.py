@@ -7,12 +7,7 @@ import discord
 import numpy as np
 import matplotlib.pyplot as plt
 
-# pip install discord-ui
-import subprocess
-subprocess.run(["pip", "install", "discord-ui"])
-subprocess.run(["pip", "install", "-U", "git+https://github.com/Rapptz/discord.py"])
-
-# import UI and constants
+# import Discord UI and Constants
 from view import *
 from constants import *
 
@@ -603,7 +598,7 @@ class DiscordClient(discord.Client):
             for i in range(len(choices[1:])):
                 await pollmsg.add_reaction(emoji[i])
 
-        # get mcv notifications within 1 week
+        # get mcv notifications
         if msg.startswith("$noti"):
             attr = msg.split("$noti")[1].split()
             if len(attr) > 2:
@@ -612,15 +607,24 @@ class DiscordClient(discord.Client):
                 return
 
             if len(attr) == 0:
-                notifications = get_notifications()
-                embedVar = discord.Embed(title="MCV Notification", color=discord.Color.blue())
-                for notification in notifications:
-                    value = f"```{notification[1]}```{notification[2]}"
-                    embedVar.add_field(name=notification[0], value=value, inline=False)
-                await message.channel.send(embed=embedVar)
-            else:
                 await message.channel.send(view=NotiMenu())
-
+                return
+            elif len(attr) == 1:
+                if attr[0].isnumeric():
+                    notifications = get_notifications(days=attr[0])
+                elif attr[0].title() in ['Assignment', 'Material', 'Announcement']:
+                    notifications = get_notifications(select=attr[0])
+                else:
+                    await message.channel.send("type must be between `Assignment, Material, Announcement`")
+                    return
+            else:
+                notifications = get_notifications(attr[0], attr[1])
+            
+            embedVar = discord.Embed(title="MCV Notification", color=discord.Color.blue())
+            for notification in notifications:
+                value = f"```{notification[1]}```{notification[2]}"
+                embedVar.add_field(name=notification[0], value=value, inline=False)
+            await message.channel.send(embed=embedVar)
 
         # send meme
         if msg.startswith("$meme"):

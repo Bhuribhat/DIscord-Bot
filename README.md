@@ -9,6 +9,12 @@ To use Discord UI Components:
 >> pip install -U git+https://github.com/Rapptz/discord.py
 ```
 
+Or config `pyproject.toml` in Replit:  
+
+```sh
+discord = {git = "https://github.com/Rapptz/discord.py"}
+```
+
 ### Useful Commands
 
 - Send schedule every 7 am
@@ -41,6 +47,8 @@ To use Discord UI Components:
 <img src="./resources/image6.png" width="500"></a>
 
 - Notification  
-**usage**: $noti [days] [type]
+**usage**: $noti [days] [type] (or use dropdown)
+
 <p align="left">
-<img src="./resources/image7.png" width="500"></a>
+<img src="./resources/image8.png" width="500"></a>
+<img src="./resources/image7.png" width="500" height="626"></a>

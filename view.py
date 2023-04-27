@@ -1,4 +1,5 @@
 import discord
+import asyncio
 from mcv_notify import get_notifications
 
 
@@ -95,14 +96,17 @@ class NotiMenu(discord.ui.View):
 
             # Filter by Type
             discord.SelectOption(
-                label="Announcment",
-                description="Pick Type Announcment!"
+                emoji="📢",
+                label="Announcement",
+                description="Pick Type Announcement!"
             ),
             discord.SelectOption(
+                emoji="📝",
                 label="Assignment",
                 description="Pick Type Assignment!"
             ),
             discord.SelectOption(
+                emoji="📚",
                 label="Material",
                 description="Pick Type Material!"
             ),
@@ -111,41 +115,49 @@ class NotiMenu(discord.ui.View):
             discord.SelectOption(
                 emoji="0️⃣",
                 label="0 Days",
+                value="0",
                 description="Within today!"
             ),
             discord.SelectOption(
                 emoji="1️⃣",
                 label="1 Days",
+                value="1",
                 description="Within 1 day!"
             ),
             discord.SelectOption(
                 emoji="2️⃣",
                 label="2 Days",
+                value="2",
                 description="Within 2 days!"
             ),
             discord.SelectOption(
                 emoji="3️⃣",
                 label="3 Days",
+                value="3",
                 description="Within 3 days!"
             ),
             discord.SelectOption(
                 emoji="4️⃣",
                 label="4 Days",
+                value="4",
                 description="Within 4 days!"
             ),
             discord.SelectOption(
                 emoji="5️⃣",
                 label="5 Days",
+                value="5",
                 description="Within 5 days!"
             ),
             discord.SelectOption(
                 emoji="6️⃣",
                 label="6 Days",
+                value="6",
                 description="Within 6 days!"
             ),
             discord.SelectOption(
                 emoji="7️⃣",
                 label="7 Days",
+                value="7",
                 description="Within 7 days!"
             ),
         ]
@@ -153,16 +165,22 @@ class NotiMenu(discord.ui.View):
 
     # the function called when the user is done selecting options
     async def select_callback(self, interaction, select):
+        await interaction.response.defer()
+        await asyncio.sleep(10)
+
         if len(select.values) == 1:
             if select.values[0].isnumeric():
                 notifications = get_notifications(days=select.values[0])
             elif select.values[0].title() in ['Assignment', 'Material', 'Announcement']:
                 notifications = get_notifications(select=select.values[0])
-        else:
-            notifications = get_notifications(select.values[1], select.values[0])
+        if len(select.values) == 2:
+            filter, days = select.values
+            print(f"filter = {filter}, days = {days}")
+            notifications = get_notifications(days=days, select=filter)
 
         embedVar = discord.Embed(title="MCV Notification", color=discord.Color.blue())
         for notification in notifications:
             value = f"```{notification[1]}```{notification[2]}"
             embedVar.add_field(name=notification[0], value=value, inline=False)
-        await interaction.response.send_message(embed=embedVar)
+            
+        await interaction.followup.send(embed=embedVar)
