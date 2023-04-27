@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 # pip install discord-ui
 import subprocess
 subprocess.run(["pip", "install", "discord-ui"])
+subprocess.run(["pip", "install", "-U", "git+https://github.com/Rapptz/discord.py"])
 
 # import UI and constants
 from view import *

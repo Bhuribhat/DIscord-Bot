@@ -2,10 +2,11 @@
 
 ### Instruction
 
-to use discord-ui:
+To use Discord UI Components:
 
 ```sh
 >> pip install discord-ui
+>> pip install -U git+https://github.com/Rapptz/discord.py
 ```
 
 ### Useful Commands
