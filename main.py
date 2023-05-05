@@ -647,6 +647,6 @@ if __name__ == '__main__':
     intents.message_content = True
 
     # driver code
-    client = DiscordClient()
+    client = DiscordClient(intents=intents)
     keep_alive()
     client.run(TOKEN)
