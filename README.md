@@ -9,10 +9,11 @@ To use Discord UI Components:
 >> pip install -U git+https://github.com/Rapptz/discord.py
 ```
 
-Or config `pyproject.toml` in Replit:  
+or config `pyproject.toml` in Replit:  
 
 ```sh
-discord = {git = "https://github.com/Rapptz/discord.py"}
+discord = {git = "https://github.com/Rapptz/discord.py"} or
+discord = "^2.2.3"
 ```
 
 ### Useful Commands
