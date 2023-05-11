@@ -607,6 +607,7 @@ class DiscordClient(discord.Client):
                 return
 
             if len(attr) == 0:
+                await message.channel.send("ํYou can select up to 2 filters!")
                 await message.channel.send(view=NotiMenu())
                 return
             elif len(attr) == 1:
