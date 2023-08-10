@@ -1,4 +1,5 @@
 import os
+import numpy as np
 
 TOKEN = os.environ['TOKEN']
 CP_DOCS = "https://docs.google.com/document/d/1C1sF4aS6kFjqWBtU91vSYUvTSxdh9xxXhA9LeUUTbXg/edit#heading=h.8sb6c0hcl62a"
@@ -8,14 +9,12 @@ words    = ['ว่าไง', 'มา', 'เหงา', 'หิว', 'ง่ว
 interact = ['โอ้ววว', 'ไงเงา', 'ฝันดีน้า', 'เยลโล่ว', 'อู้วววววว']
 
 schedule = {
-    "monday":    "13.00 - 16.00 PM : [Computer Vision](https://www.mycourseville.com/?q=courseville/course/32214)\n"\
-                 "13.00 - 16.00 PM : [Neural Network](https://sites.google.com/view/ssukree/courses/2110571-neural-network-22022?authuser=0)",
-    "tuesday":   "08.00 - 09.30 AM : [Software Eng II](https://www.mycourseville.com/?q=courseville/course/32207)\n"\
-                 "09.30 - 12.30 AM : [OS Sys Prog](https://www.mycourseville.com/?q=courseville/course/32203)\n"\
-                 "13.00 - 16.00 PM : [Data Sci/Eng](https://www.mycourseville.com/?q=courseville/course/32215)",
-    "wednesday": "09.00 - 12.00 AM : [Comp Network I](https://www.mycourseville.com/?q=courseville/course/32216)",
-    "thursday":  "08.00 - 09.30 AM : [Software Eng II](https://www.mycourseville.com/?q=courseville/course/32207)",
-    "friday":    "09.00 - 12.00 AM : [Tech Writing Eng](https://sites.google.com/view/5500308-s12-s2-22/home)"
+    "monday":       "09.00 AM - 12.00 AM : [Software Define System](https://www.mycourseville.com/?q=courseville/course/35359)\n"\
+                    "01.00 PM - 04.00 PM : [Introduction to Japan Literature](https://www.mycourseville.com/?q=courseville/course/35549)",
+    "tuesday":      "10.00 AM - 07.00 PM : [Capstone Chatbot](https://chula.zoom.us/j/97160899950?pwd=eW1pdm9ablcwSno3dUNtbU9ITjFNUT09)",
+    "wednesday":    "10.00 AM - 07.00 PM : [Capstone Chatbot](https://chula.zoom.us/j/97160899950?pwd=eW1pdm9ablcwSno3dUNtbU9ITjFNUT09)",
+    "thursday":     "01.00 PM - 04.00 PM : [Parallel and Distributed Systems](https://www.mycourseville.com/?q=courseville/course/35354)",
+    "friday":       "09.00 AM - 12.00 AM : [Artificial Intelligence II](https://sites.google.com/view/ssukree/courses/2110477-artificial-intelligence-12022)",
 }
 
 # function to get min/max point
