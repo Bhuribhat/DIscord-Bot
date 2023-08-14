@@ -9,12 +9,12 @@ words    = ['ว่าไง', 'มา', 'เหงา', 'หิว', 'ง่ว
 interact = ['โอ้ววว', 'ไงเงา', 'ฝันดีน้า', 'เยลโล่ว', 'อู้วววววว']
 
 schedule = {
-    "monday":       "09.00 AM - 12.00 AM : [Software Define System](https://www.mycourseville.com/?q=courseville/course/35359)\n"\
+    "monday":       "09.00 AM - 12.00 PM : [Software Define System](https://www.mycourseville.com/?q=courseville/course/35359)\n"\
                     "01.00 PM - 04.00 PM : [Introduction to Japan Literature](https://www.mycourseville.com/?q=courseville/course/35549)",
     "tuesday":      "10.00 AM - 07.00 PM : [Capstone Chatbot](https://chula.zoom.us/j/97160899950?pwd=eW1pdm9ablcwSno3dUNtbU9ITjFNUT09)",
     "wednesday":    "10.00 AM - 07.00 PM : [Capstone Chatbot](https://chula.zoom.us/j/97160899950?pwd=eW1pdm9ablcwSno3dUNtbU9ITjFNUT09)",
     "thursday":     "01.00 PM - 04.00 PM : [Parallel and Distributed Systems](https://www.mycourseville.com/?q=courseville/course/35354)",
-    "friday":       "09.00 AM - 12.00 AM : [Artificial Intelligence II](https://sites.google.com/view/ssukree/courses/2110477-artificial-intelligence-12022)",
+    "friday":       "09.00 AM - 12.00 PM : [Artificial Intelligence II](https://sites.google.com/view/ssukree/courses/2110477-artificial-intelligence-12022)",
 }
 
 # function to get min/max point
