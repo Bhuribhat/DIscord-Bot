@@ -480,7 +480,7 @@ class DiscordClient(discord.Client):
                     " | [MCV](https://www.mycourseville.com/?q=courseville)" +
                     " [Grader](https://nattee.net/grader)",
                     inline=False)
-            await message.channel.send(embed=embedVar)
+                await message.channel.send(embed=embedVar)
 
         # plot graph within 10,000 number
         if msg.startswith("$plot"):
