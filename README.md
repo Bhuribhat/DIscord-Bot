@@ -14,6 +14,17 @@ or config `pyproject.toml` in Replit:
 discord = "^2.2.3"
 ```
 
+### How to Setup your Environment Variables
+
+You could export your variables in your `.env` using the template below
+
+```bash
+AQIOZ_ID="<@YOUR_ID>"
+MCV_USERNAME="YOUR_USERNAME"
+MCV_PASSWORD="YOUR_PASSWORD"
+TOKEN="YOUR_DISCORD_TOKEN"
+```
+
 ### Useful Commands
 
 - Send schedule every 7 am
